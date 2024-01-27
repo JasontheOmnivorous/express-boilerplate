@@ -29,8 +29,8 @@ app.use(express.json({ limit: "10kb" }));
 
 app.use(mongoSanitize());
 
-app.use("/api/v1/user");
-app.use("/api/v1/todo");
+// app.use("/api/v1/user");
+// app.use("/api/v1/todo");
 
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
   return next(new AppError("This route is not defined on this server.", 404));

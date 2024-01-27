@@ -65,8 +65,8 @@ export const authGuard = catchAsync(
     let token = "";
 
     if (
-      req.headers.authorization ||
-      req.headers.authorization?.startsWith("Bearer")
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
     ) {
       token = req.headers.authorization.split(" ")[1];
     }
@@ -84,7 +84,7 @@ export const authGuard = catchAsync(
       process.env.JWT_SECRET as string
     ) as JwtPayload;
 
-    const dbUser = await User.findById(decodedToken.id, { isActive: true });
+    const dbUser = await User.findById(decodedToken.id);
 
     if (!dbUser)
       return next(

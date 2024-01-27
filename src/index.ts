@@ -6,7 +6,6 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import morgan from "morgan";
 import globalErrorHandler from "./middleware/globalErrorHandler";
-import adminRoute from "./route/adminRoute";
 import userRoute from "./route/userRoute";
 import AppError from "./utils/appError";
 const app = express();
@@ -32,7 +31,6 @@ app.use(express.json({ limit: "10kb" }));
 app.use(mongoSanitize());
 
 app.use("/api/v1/user", userRoute);
-app.use("/api/v1/admin", adminRoute);
 
 app.use("*", (req: Request, res: Response, next: NextFunction) => {
   return next(new AppError("This route is not defined on this server.", 404));

@@ -22,19 +22,33 @@ git clone http://github.com/JasontheOmnivorous/express-boilerplate.git
 2. Navigate to your project directory:
 
 ```bash
-   cd express-boilerplate
+cd express-boilerplate
 ```
 
 3. Install dependencies:
 
 ```bash
-   npm i
+npm i
 ```
 
 ### Usage
 
+Development script:
+
 ```bash
-   npm run dev
+npm run dev
+```
+
+Start script:
+
+```bash
+npm start
+```
+
+Build script:
+
+```bash
+npm run build
 ```
 
 ### Contributing

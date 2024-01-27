@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema<UserType>({
   },
   role: {
     type: String,
+    // adjust rokes according to your app, but user and admin should be there by default
     enum: ["user", "admin"],
     default: "user",
   },
@@ -51,5 +52,22 @@ userSchema.pre("save", async function (this: UserType, next) {
   this.confirmPassword = undefined;
   next();
 });
+
+userSchema.methods.passwordChangedAfterLogin = function (
+  this: UserType,
+  JWTIssuedAt: number
+) {
+  if (this.passwordChangedAt instanceof Date) {
+    const changedTimestamp = Number(this.passwordChangedAt.getTime() / 1000);
+    return JWTIssuedAt < changedTimestamp;
+  }
+};
+
+userSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+  password: string
+) {
+  return await bcrypt.compare(candidatePassword, password);
+};
 
 export const User = mongoose.model("User", userSchema);

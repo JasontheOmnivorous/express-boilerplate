@@ -31,8 +31,13 @@ const userSchema = new mongoose.Schema<UserType>({
     },
   },
   role: {
+    type: String,
     enum: ["user", "admin"],
     default: "user",
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
   },
   passwordChangedAt: Date,
   passwordResetToken: String,

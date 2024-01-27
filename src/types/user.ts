@@ -6,6 +6,7 @@ export interface UserType extends Document {
   password: string;
   confirmPassword: string | undefined;
   role: string;
+  isActive: boolean;
   passwordChangedAt: Date | number;
   passwordResetToken: string | undefined;
   passwordResetTokenExpiration: number | undefined;

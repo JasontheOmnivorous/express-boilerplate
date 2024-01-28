@@ -8,6 +8,7 @@ covered yet, but I'll upgrade to these overtime.
 
 - Minimal secure middleware setup.
 - JWT authentication.
+- Password reset gmail.
 - User model and route system.
 - Error handling.
 

@@ -51,6 +51,22 @@ Build script:
 npm run build
 ```
 
+### Environment Variables
+
+```bash
+PORT=8000
+DB=<Your-MongoDB-cluster-connection-string>
+NODE_ENV=development # switch dev and prod environment
+JWT_SECRET=cdjhebwyfgo837guowfaljbksdflieurpf982bkjskcjbuwbkeefib2u3uif # generate random bullshits
+JWT_EXPIRES=90d # config to your liking
+ADMIN_EMAIL=<Your-admin-email>
+EMAIL_USER=<Your-email-account-to-send-password-reset-token>
+EMAIL_PASSWORD=<Your-gmail-app-password>
+```
+
+EMAIL_PASSWORD is not your normal gmail account password. It's an app password and
+you can obtain it by enabling two step verification in your google account.
+
 ### Contributing
 
 I don't care bro, do whatever you want.😂

@@ -4,6 +4,7 @@ import { User } from "../model/userModel";
 import { ExtendedRequest } from "../types/app";
 import AppError from "../utils/appError";
 import { filterBody } from "../utils/helpers";
+import { sendEmail } from "../utils/sendEmail";
 
 export const updateMe = catchAsync(
   async (req: ExtendedRequest, res: Response, next: NextFunction) => {
@@ -38,5 +39,43 @@ export const deleteMe = catchAsync(
       status: "success",
       data: null,
     });
+  }
+);
+
+export const forgotPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = filterBody(req.body, "email");
+
+    if (!email) return next(new AppError("Email is required.", 400));
+
+    const dbUser = await User.findOne({ email });
+
+    if (!dbUser)
+      return next(new AppError("No user found with that email.", 404));
+
+    const resetToken = dbUser.generatePasswordResetToken();
+
+    await dbUser.save({ validateBeforeSave: false });
+
+    const resetUrl = `${req.protocol}://${req.originalUrl}/api/v1/user/reset-password/${resetToken}`;
+
+    const constructedMessage = `Forgot your password? Send a PATCH request with your new password and confirmPassword to ${resetUrl}.\nIf you did not forget your password, simply ignore this message.`;
+
+    try {
+      await sendEmail({
+        email,
+        subject: "Your password reset token (valid for 10 mins)",
+        textMessage: constructedMessage,
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Reset token sent to email!",
+      });
+    } catch (err) {
+      dbUser.passwordResetToken = undefined;
+      dbUser.passwordResetTokenExpiration = undefined;
+      await dbUser.save({ validateBeforeSave: false });
+    }
   }
 );

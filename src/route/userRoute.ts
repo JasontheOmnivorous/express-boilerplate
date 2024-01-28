@@ -12,11 +12,16 @@ import {
   restrictAccess,
   signup,
 } from "../controller/authController";
-import { deleteMe, updateMe } from "../controller/userController";
+import {
+  deleteMe,
+  forgotPassword,
+  updateMe,
+} from "../controller/userController";
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
+router.post("/forgot-password", forgotPassword);
 
 router.patch("/update-me", authGuard, updateMe);
 router.delete("/delete-me", authGuard, deleteMe);

@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import mongoose from "mongoose";
 import validator from "validator";
 import { UserType } from "../types/user";
@@ -52,6 +53,19 @@ userSchema.pre("save", async function (this: UserType, next) {
   this.confirmPassword = undefined;
   next();
 });
+
+userSchema.methods.generatePasswordResetToken = function (this: UserType) {
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  this.passwordResetToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  this.passwordResetTokenExpiration = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 
 userSchema.methods.passwordChangedAfterLogin = function (
   this: UserType,

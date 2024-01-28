@@ -15,6 +15,7 @@ import {
 import {
   deleteMe,
   forgotPassword,
+  resetPassword,
   updateMe,
 } from "../controller/userController";
 const router = express.Router();
@@ -22,6 +23,7 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
+router.patch("/reset-password/:token", resetPassword);
 
 router.patch("/update-me", authGuard, updateMe);
 router.delete("/delete-me", authGuard, deleteMe);

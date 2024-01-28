@@ -1,9 +1,10 @@
+import crypto from "crypto";
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../middleware/catchAsync";
 import { User } from "../model/userModel";
 import { ExtendedRequest } from "../types/app";
 import AppError from "../utils/appError";
-import { filterBody } from "../utils/helpers";
+import { filterBody, respondToken } from "../utils/helpers";
 import { sendEmail } from "../utils/sendEmail";
 
 export const updateMe = catchAsync(
@@ -77,5 +78,37 @@ export const forgotPassword = catchAsync(
       dbUser.passwordResetTokenExpiration = undefined;
       await dbUser.save({ validateBeforeSave: false });
     }
+  }
+);
+
+export const resetPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { password, confirmPassword } = filterBody(
+      req.body,
+      "password",
+      "confirmPassword"
+    );
+
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const dbUser = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetTokenExpiration: { $gt: Date.now() },
+    });
+
+    if (!dbUser)
+      return next(new AppError("Token is invalid or has expired.", 400));
+
+    dbUser.password = password;
+    dbUser.confirmPassword = confirmPassword;
+    dbUser.passwordResetToken = undefined;
+    dbUser.passwordResetTokenExpiration = undefined;
+
+    await dbUser.save({ validateBeforeSave: true });
+
+    respondToken(res, 200, dbUser, next);
   }
 );

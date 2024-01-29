@@ -14,12 +14,6 @@ covered yet, but I'll upgrade to these overtime.
 
 ### Installation
 
-# Via NPM
-
-```bash
-npm i jasonplate
-```
-
 ### Manual Installation
 
 1. Clone the repository:

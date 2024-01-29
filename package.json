@@ -1,23 +1,12 @@
 {
-  "name": "jasonplate",
-  "version": "1.0.6",
+  "name": "express-boilerplate",
+  "version": "1.0.0",
   "description": "Ready-to-use template for Express starters.",
   "main": "server.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JasontheOmnivorous/express-boilerplate.git"
-  },
-  "engines": {
-    "node": ">=14"
-  },
   "scripts": {
     "dev": "ts-node-dev ./src/server.ts",
     "start": "nodemon ./dist/server.js",
-    "build": "tsc",
-    "prepare": "tsc"
-  },
-  "bin": {
-    "jasonplate": "./server.ts"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "Min Thant",
@@ -49,12 +38,5 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.8",
     "validator": "^13.11.0"
-  },
-  "files": [
-    "src",
-    "tsconfig.json",
-    "*.ts",
-    ".gitignore",
-    "readme.md"
-  ]
+  }
 }

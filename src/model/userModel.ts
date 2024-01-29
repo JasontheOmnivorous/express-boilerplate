@@ -75,6 +75,8 @@ userSchema.methods.passwordChangedAfterLogin = function (
     const changedTimestamp = Number(this.passwordChangedAt.getTime() / 1000);
     return JWTIssuedAt < changedTimestamp;
   }
+
+  return false;
 };
 
 userSchema.methods.comparePassword = async function (

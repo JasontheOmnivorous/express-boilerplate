@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "ts-node-dev ./src/server.ts",
     "start": "nodemon ./dist/server.js",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "tsc"
   },
   "keywords": [],
   "author": "Min Thant",
@@ -38,5 +39,12 @@
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.8",
     "validator": "^13.11.0"
-  }
+  },
+  "files": [
+    "src",
+    "tsconfig.json",
+    "*.ts",
+    ".gitignore",
+    "readme.md"
+  ]
 }

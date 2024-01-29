@@ -1,6 +1,6 @@
 {
   "name": "jasonplate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Ready-to-use template for Express starters.",
   "main": "index.ts",
   "repository": {

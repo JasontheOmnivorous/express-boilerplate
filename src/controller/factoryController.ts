@@ -6,7 +6,7 @@ import ApiFeatures from "../utils/apiFeatures";
 import AppError from "../utils/appError";
 import { filterBody } from "../utils/helpers";
 
-export const findAll = (Model: Model<UserType>) => {
+export const getAll = (Model: Model<UserType>) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const features = new ApiFeatures(Model.find(), req.query)
       .filter()
@@ -25,7 +25,7 @@ export const findAll = (Model: Model<UserType>) => {
   });
 };
 
-export const findOne = (Model: Model<UserType>) => {
+export const getOne = (Model: Model<UserType>) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const document = await Model.findById(req.params.id);
 
@@ -59,6 +59,25 @@ export const crateOne = (Model: Model<UserType>) => {
       status: "success",
       data: {
         data: newDocument,
+      },
+    });
+  });
+};
+
+export const updateOne = (Model: Model<UserType>) => {
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const document = await Model.findByIdAndUpdate(req.params.id, req.body, {
+      runValidators: true,
+      new: true,
+    });
+
+    if (!document)
+      return next(new AppError(`No ${Model} found with that id.`, 400));
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        data: document,
       },
     });
   });

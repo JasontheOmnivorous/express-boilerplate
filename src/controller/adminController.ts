@@ -1,80 +1,18 @@
-import { NextFunction, Request, Response } from "express";
-import { catchAsync } from "../middleware/catchAsync";
 import { User } from "../model/userModel";
-import AppError from "../utils/appError";
-import { filterBody } from "../utils/helpers";
+import {
+  createOne,
+  deleteOne,
+  getAll,
+  getOne,
+  updateOne,
+} from "./factoryController";
 
-export const getAllUsers = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const users = await User.find({ isActive: true });
+export const getAllUsers = getAll(User);
 
-    res.status(200).json({
-      status: "success",
-      totalUsers: users.length,
-      data: users,
-    });
-  }
-);
+export const getUser = getOne(User);
 
-export const getUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const user = await User.findById(req.params.id, { isActive: true });
+export const createUser = createOne(User);
 
-    if (!user) return next(new AppError("No user found with that id.", 400));
+export const updateUser = updateOne(User);
 
-    res.status(200).json({
-      status: "success",
-      data: user,
-    });
-  }
-);
-
-export const createUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const validBody = filterBody(
-      req.body,
-      "name",
-      "email",
-      "password",
-      "confirmPassword",
-      "role"
-    );
-
-    const newUser = await User.create(validBody);
-
-    res.status(201).json({
-      status: "success",
-      data: newUser,
-    });
-  }
-);
-
-export const updateUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!updatedUser)
-      return next(
-        new AppError("Something went wrong with updating user data.", 500)
-      );
-
-    res.status(200).json({
-      status: "success",
-      data: updatedUser,
-    });
-  }
-);
-
-export const deleteUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    await User.findByIdAndDelete(req.params.id);
-
-    res.status(204).json({
-      status: "success",
-      data: null,
-    });
-  }
-);
+export const deleteUser = deleteOne(User);

@@ -8,7 +8,10 @@ import { filterBody } from "../utils/helpers";
 
 export const getAll = (Model: Model<UserType>) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const features = new ApiFeatures(Model.find(), req.query)
+    let filter = {};
+    if (Model.modelName === "User") filter = { isActive: true };
+
+    const features = new ApiFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
       .paginate()
@@ -18,6 +21,7 @@ export const getAll = (Model: Model<UserType>) => {
 
     res.status(200).json({
       status: "success",
+      totalData: documents.length,
       data: {
         data: documents,
       },
@@ -42,7 +46,7 @@ export const getOne = (Model: Model<UserType>) => {
 };
 
 // type of Model may differ from what model we're using
-export const crateOne = (Model: Model<UserType>) => {
+export const createOne = (Model: Model<UserType>) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const validBody = filterBody(
       req.body,

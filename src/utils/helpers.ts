@@ -7,7 +7,7 @@ export const filterBody = (body: any, ...allowedFields: string[]) => {
   const finalObj: any = {};
 
   Object.keys(body).forEach((key) => {
-    finalObj[key] = body[key];
+    if (allowedFields.includes(key)) finalObj[key] = body[key];
   });
 
   return finalObj;
